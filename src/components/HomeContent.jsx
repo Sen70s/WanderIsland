@@ -1,46 +1,25 @@
-const HomeContent = () => {
-  return (
-    <div className="space-y-6">
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">欢迎来到 WanderIsland</h2>
-        <p className="text-gray-600 mb-6">
-          这里是你探索世界的起点，发现更多精彩内容。
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-indigo-50 p-4 rounded-lg">
-            <h3 className="font-semibold text-indigo-800 mb-2">热门推荐</h3>
-            <p className="text-indigo-600 text-sm">发现最受欢迎的内容</p>
-          </div>
-          <div className="bg-green-50 p-4 rounded-lg">
-            <h3 className="font-semibold text-green-800 mb-2">最新动态</h3>
-            <p className="text-green-600 text-sm">查看最新发布的内容</p>
-          </div>
-        </div>
-      </div>
+import { LucideChevronRight } from "lucide-react";
+import { Outlet, useNavigate } from 'react-router-dom';
 
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-xl font-semibold text-gray-900 mb-4">今日精选</h3>
-        <div className="space-y-4">
-          {[1, 2, 3].map((item) => (
-            <div key={item} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-              <div className="flex items-start space-x-4">
-                <div className="bg-gray-200 rounded-lg w-16 h-16 flex-shrink-0"></div>
-                <div className="flex-1">
-                  <h4 className="font-medium text-gray-900">精选内容 #{item}</h4>
-                  <p className="text-gray-600 text-sm mt-1">
-                    这里是一些精彩的描述内容...
-                  </p>
-                  <div className="flex items-center mt-2 text-xs text-gray-500">
-                    <span>2小时前</span>
-                    <span className="mx-2">•</span>
-                    <span>1.2k 浏览</span>
-                  </div>
+const HomeContent = () => {
+  const navigate = useNavigate();
+  return (
+    <div className="">
+      {[...Array(100).keys()].map((item) => (
+            <div className="flex justify-between items-center px-5 py-4 space-x-3 border-b border-gray-200"
+            key={item}
+             onClick={()=>navigate(`/chat/${item}`)}>
+              <img src="https://p26-passport.byteacctimg.com/img/user-avatar/78a7017b7166fccc58ec23f717d9a96d~50x50.awebp"
+                alt="placeholder" className="size-14 rounded-2xl" />
+              <div className="flex-1 flex flex-col space-y-1">
+                <div className="flex w-full justify-between items-center">
+                  <h3 className="text-lg font-black text-black">用户名{item}</h3>
+                  <h3 className="text-md font-semibold text-gray-400">上午 10:51 </h3>
                 </div>
+                <p className="text-black/30 text-md font-semibold">记得照顾好自己</p>
               </div>
             </div>
           ))}
-        </div>
-      </div>
     </div>
   );
 };

@@ -1,6 +1,20 @@
-import { useNavigate } from 'react-router-dom';
-import BottomNav from './BottomNav';
+import { Outlet, useNavigate } from 'react-router-dom';
+import user_avatar from '@/images/avatar/user.webp';
+import { LucideMessageCircleMore } from 'lucide-react';
+import { LucideUser } from 'lucide-react';
+import { LucideTelescope } from 'lucide-react';
+import { LucideSettings } from 'lucide-react';
+import { LucideBrain } from 'lucide-react';
+import { LucideWholeWord } from 'lucide-react';
 
+const SideBarItems = ({ icon }) => {
+  return (
+    <div className='bg-transparent hover:bg-(--system-color-selected)/45 size-11 min-h-11 rounded-lg
+     text-black/70 flex items-center justify-center transition-colors duration-300 cursor-pointer'>
+      {icon}
+    </div>
+  );
+}
 const MainLayout = ({ children }) => {
   const navigate = useNavigate();
 
@@ -9,40 +23,48 @@ const MainLayout = ({ children }) => {
     navigate('/login');
   };
 
+
   return (
-    <div className="min-h-screen bg-gray-50 pb-24"> {/* 增加底部padding以适应iOS风格导航栏 */}
-      {/* 顶部导航栏 */}
-      <nav className="bg-white/90 backdrop-blur-xl shadow-sm sticky top-0 z-10 border-b border-gray-200/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16 items-center">
-            <div className="flex items-center">
-              <h1 className="text-xl font-bold bg-linear-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                WanderIsland
-              </h1>
-            </div>
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              >
-                退出
-              </button>
-            </div>
+    <div className="h-screen w-screen bg-(--system-color-background) flex flex-col items-center p-1 pt-0">
+      {/* 顶部状态栏占位符 */}
+      <div className='h-(--system-height-bar-action) w-full bg-(--system-color-bar-action-bg) sticky top-0 left-0 right-0 z-20 flex
+       items-center justify-between'>
+        <div className='flex space-x-2 items-center pl-1'>
+          {/* <img src={logo_white} alt="Logo" className='size-6 rounded-md ' /> */}
+          <a className='text-2xl font-bold text-black font-logo'>Wander Island</a>
+        </div>
+
+        <div className='flex space-x-1 items-center'>
+          <a className='text-lg font-medium text-black'>Nathan</a>
+          <img src={user_avatar} alt="user avatar" className='size-7 rounded-full' />
+        </div>
+      </div>
+
+      <div className='h-full w-full bg-(--system-white) rounded-md flex overflow-hidden'>
+
+        {/* 左侧功能导航栏 */}
+        <div className='h-full w-(--system-width-bar-side) border-r border-gray-100 flex flex-col items-center py-2 space-y-2 float-left justify-between'>
+          <SideBarItems icon={<LucideMessageCircleMore className="size-6" />} />
+          <SideBarItems icon={<LucideUser className="size-6" />} />
+          <SideBarItems icon={<LucideTelescope className="size-6" />} />
+          <SideBarItems icon={<LucideBrain className="size-6" />} />
+
+          <div className='h-full'></div>
+
+          <div className='justify-self-end flex flex-col space-y-2'>
+            <SideBarItems icon={<LucideWholeWord className="size-6" />} />
+            <SideBarItems icon={<LucideSettings className="size-6" />} />
           </div>
         </div>
-      </nav>
 
-      {/* 内容区域 */}
-      <main className="pb-4">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-          {children}
-        </div>
-      </main>
+        <Outlet />
 
-      {/* 底部导航栏 */}
-      <BottomNav />
+      </div>
+
     </div>
+
   );
+
 };
 
 export default MainLayout;
