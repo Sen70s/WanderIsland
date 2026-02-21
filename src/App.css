@@ -21,6 +21,8 @@
 
   --system-color-background: var(--system-gray);
   --system-color-bar-action-bg: var(--system-gray);
+  --system-color-selected-icon: var(--system-blue);
+  --system-color-disabled: rgb(196, 196, 196);
 
   --system-color-selected: var(--system-gray);
 

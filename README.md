@@ -16,8 +16,8 @@
   <a href="#features">功能特性</a> •
   <a href="#tech-stack">技术栈</a> •
   <a href="#quick-start">快速开始</a> •
-  <a href="#screenshots">截图预览</a> •
-  <a href="#directory-structure">目录结构</a>
+  <a href="#api-system">API系统</a> •
+  <a href="#screenshots">截图预览</a>
 </p>
 
 ## 🌟 项目亮点
@@ -31,6 +31,7 @@ WanderIsland 是一个精心设计的 React 应用模板，融合了现代前端
 - **响应式设计** - 完美适配移动端和桌面端
 - **现代化构建** - 基于 Rsbuild 的高性能构建工具
 - **组件化架构** - 清晰的组件划分和复用机制
+- **完整API系统** - 封装完善的HTTP客户端和服务层
 
 ### 📱 iOS 风格导航
 - **毛玻璃效果** - `backdrop-blur-xl` 创建半透明模糊背景
@@ -93,6 +94,93 @@ pnpm run preview
 }
 ```
 
+## 🔌 API System
+
+本项目内置了一套完整的API系统，提供现代化的HTTP客户端封装和便捷的React Hooks。
+
+### 📁 目录结构
+
+```
+src/
+├── api/
+│   └── index.js                 # API系统入口文件
+├── utils/
+│   └── apiClient.js            # 核心HTTP客户端
+├── config/
+│   └── apiConfig.js            # API配置文件
+├── services/
+│   └── apiService.js           # API服务工厂
+├── hooks/
+│   └── useApi.js               # React Hooks封装
+├── docs/
+│   └── API_USAGE.md            # 详细使用文档
+└── components/
+    └── ApiExample.jsx          # API使用示例组件
+```
+
+### 🚀 快速使用
+
+#### 1. 基础API调用
+```javascript
+import apiService from './services/apiService';
+
+// 获取用户信息
+const userInfo = await apiService.users.getProfile();
+
+// 登录
+const loginResult = await apiService.users.login({
+  username: 'user',
+  password: 'password'
+});
+```
+
+#### 2. 在React组件中使用
+```jsx
+import { useUserApi } from './hooks/useApi';
+
+function UserProfile() {
+  const { getProfile, profileState } = useUserApi();
+  
+  useEffect(() => {
+    getProfile();
+  }, []);
+  
+  if (profileState.loading) return <div>加载中...</div>;
+  if (profileState.error) return <div>错误: {profileState.error.message}</div>;
+  
+  return <div>欢迎, {profileState.data?.name}!</div>;
+}
+```
+
+#### 3. 使用全局加载状态
+```jsx
+import { useGlobalLoading } from './hooks/useApi';
+
+function App() {
+  const loading = useGlobalLoading();
+  
+  return (
+    <>
+      {loading && <div className="loading-overlay">加载中...</div>}
+      {/* 应用内容 */}
+    </>
+  );
+}
+```
+
+### 🛠 核心特性
+
+- **拦截器支持** - 请求/响应拦截器处理认证、错误等
+- **自动认证** - 自动添加Authorization头
+- **错误处理** - 统一的错误处理机制
+- **加载状态** - 全局和局部加载状态管理
+- **环境配置** - 支持多环境配置
+- **TypeScript友好** - 完善的类型定义
+
+### 📖 详细文档
+
+查看 [API使用文档](./src/docs/API_USAGE.md) 了解更多使用细节和最佳实践。
+
 ## 🖼 Screenshots
 
 <div align="center">
@@ -110,15 +198,28 @@ pnpm run preview
 ```
 wanderisland/
 ├── src/
+│   ├── api/
+│   │   └── index.js            # API系统统一入口
 │   ├── components/
-│   │   ├── BottomNav.jsx        # iOS 风格底部导航栏
-│   │   ├── DiscoverContent.jsx  # 发现页面内容组件
-│   │   ├── HomeContent.jsx      # 首页内容组件
+│   │   ├── ApiExample.jsx      # API使用示例
+│   │   ├── BottomNav.jsx       # iOS 风格底部导航栏
+│   │   ├── DiscoverContent.jsx # 发现页面内容组件
+│   │   ├── HomeContent.jsx     # 首页内容组件
 │   │   ├── Login.jsx           # 登录页面组件
 │   │   ├── MainLayout.jsx      # 主布局容器组件
 │   │   ├── MessagesContent.jsx # 消息页面内容组件
 │   │   ├── ProfileContent.jsx  # 个人页面内容组件
 │   │   └── ProtectedRoute.jsx  # 路由保护高阶组件
+│   ├── config/
+│   │   └── apiConfig.js        # API配置文件
+│   ├── docs/
+│   │   └── API_USAGE.md        # API使用文档
+│   ├── hooks/
+│   │   └── useApi.js           # API相关Hooks
+│   ├── services/
+│   │   └── apiService.js       # API服务工厂
+│   ├── utils/
+│   │   └── apiClient.js        # 核心API客户端
 │   ├── App.css                 # 全局样式文件
 │   ├── App.jsx                 # 应用根组件（路由配置）
 │   └── index.jsx               # 应用入口文件
@@ -164,6 +265,19 @@ const inactiveColor = 'text-gray-400'; // 未选中状态颜色
 1. 在 `src/components/` 目录下创建新的内容组件
 2. 在 `App.jsx` 中导入并添加路由配置
 3. 在 `BottomNav.jsx` 中添加对应的导航项
+
+### 配置API环境
+在 `src/config/apiConfig.js` 中修改不同环境的API地址：
+```javascript
+const API_CONFIG = {
+  development: {
+    baseURL: 'http://localhost:3001/api'
+  },
+  production: {
+    baseURL: 'https://api.yourdomain.com/api'
+  }
+};
+```
 
 ## 🤝 贡献指南
 
